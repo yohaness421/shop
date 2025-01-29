@@ -49,4 +49,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    protected static function booted(): void
+    {
+        static::deleted(function (User $user) {
+            $user->orders()->delete();
+        });
+    }
 }
