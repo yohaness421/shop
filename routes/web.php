@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('catalog', [ProductController::class, 'catalog']);
+Route::get('create-order', [OrderController::class, 'create']);
+Route::get('approve-order', [OrderController::class, 'approve']);

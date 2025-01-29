@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function setBalanceAttribute($value)
+    {
+        $this->attributes['balance'] = bcmul($value, 1, 2);
+    }
+
     protected static function booted(): void
     {
         static::deleted(function (User $user) {
