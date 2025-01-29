@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('statuses', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 255);
+            $table->timestamps();
+        });
+
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('number', 12);
+            $table->string('number', 20);
             $table->foreignId('status_id')->nullable()->constrained('statuses')->nullOnDelete();
             $table->unsignedInteger('user_id')->index('user_id_index');
             $table->json('products')->nullable();
@@ -28,5 +34,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
+        Schema::dropIfExists('statuses');
     }
 };

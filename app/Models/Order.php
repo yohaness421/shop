@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class Order extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasFactory;
 
     protected $fillable = [
         'number',
@@ -86,5 +86,14 @@ class Order extends Model
                 unset($currentProductsById[$id]);
             }
         }
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+    
+        static::creating(function ($order) {
+            $order->number = 'ORD-' . \Illuminate\Support\Str::random(4) . '-' . time();
+        });
     }
 }

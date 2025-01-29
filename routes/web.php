@@ -20,5 +20,5 @@ Route::get('/', function () {
 });
 
 Route::get('catalog', [ProductController::class, 'catalog']);
-Route::get('create-order', [OrderController::class, 'create']);
-Route::get('approve-order', [OrderController::class, 'approve']);
+Route::post('create-order', [OrderController::class, 'create']);
+Route::post('approve-order', [OrderController::class, 'approve']);
