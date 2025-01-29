@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('number', 12);
-            $table->unsignedInteger('status_id')->index('status_id_index');
+            $table->foreignId('status_id')->nullable()->constrained('statuses')->nullOnDelete();
             $table->unsignedInteger('user_id')->index('user_id_index');
             $table->json('products')->nullable();
             $table->softDeletes();
