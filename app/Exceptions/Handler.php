@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,9 +31,29 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        return response()->json([
-            'success' => false,
-            'message' => 'Произошла ошибка сервера',
-        ], 500);
+
+        if ($exception instanceof ValidationException) {
+            // Обработка ошибок валидации
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'data' => $exception->errors(),
+            ], 422);
+        }
+
+        if (!app()->environment('production')) {
+            $data = [
+                'success' => false,
+                'message' => $exception->getMessage(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTrace(),
+            ];
+        } else {
+            $data = [
+                'success' => false,
+                'message' => "Ошибка сервера",
+            ];
+        }
+        return response()->json($data, 500);
     }
 }
